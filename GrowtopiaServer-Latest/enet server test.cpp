@@ -3573,33 +3573,6 @@ void loadnews() {
 				packet::dialog(peer, "add_label_with_icon|big|`wEpoch Weather Machine|left|5958|\nadd_textbox|`oSelect Your Doom:|\nadd_spacer|small|\nadd_checkbox|epochice|ice|" + to_string(world->ice) + "|\nadd_checkbox|epochvol|Volcano|" + to_string(world->volcano) + "|\nadd_checkbox|epochland|Land|" + to_string(world->land) + "|\nend_dialog|epochweather|Cancel|OK|");
 			}
 		}
-		if (world->items[x + (y * world->width)].foreground == 340) {
-			world->items[x + (y * world->width)].foreground = 0;
-			int valgems = 0;
-			valgems = rand() % 1000;
-			int valgem = rand() % 1000;
-			valgem = valgems + 1;
-			std::ifstream ifs("gemdb/" + ((PlayerInfo*)(peer->data))->rawName + ".txt");
-			std::string content((std::istreambuf_iterator<char>(ifs)),
-				(std::istreambuf_iterator<char>()));
-
-
-			int gembux = atoi(content.c_str());
-			int fingembux = gembux + valgem;
-			ofstream myfile;
-			myfile.open("gemdb/" + ((PlayerInfo*)(peer->data))->rawName + ".txt");
-			myfile << fingembux;
-			myfile.close();
-
-			int gemcalc = gembux + valgem;
-			GamePacket pp = packetEnd(appendInt(appendString(createPacket(), "OnSetBux"), gemcalc));
-			ENetPacket* packetpp = enet_packet_create(pp.data,
-				pp.len,
-				ENET_PACKET_FLAG_RELIABLE);
-
-			enet_peer_send(peer, 0, packetpp);
-			delete pp.data;
-		}
 		if (world->items[x + (y * world->width)].foreground == 1210) {
 			if (world->weather == 8) {
 				world->weather = 0;
@@ -3991,6 +3964,33 @@ void loadnews() {
 						world->owner = "";
 						world->isPublic = false;
 					}
+					if (world->items[x + (y * world->width)].foreground == 340) {
+			world->items[x + (y * world->width)].foreground = 0;
+			int valgems = 0;
+			valgems = rand() % 1000;
+			int valgem = rand() % 1000;
+			valgem = valgems + 1;
+			std::ifstream ifs("gemdb/" + ((PlayerInfo*)(peer->data))->rawName + ".txt");
+			std::string content((std::istreambuf_iterator<char>(ifs)),
+				(std::istreambuf_iterator<char>()));
+
+
+			int gembux = atoi(content.c_str());
+			int fingembux = gembux + valgem;
+			ofstream myfile;
+			myfile.open("gemdb/" + ((PlayerInfo*)(peer->data))->rawName + ".txt");
+			myfile << fingembux;
+			myfile.close();
+
+			int gemcalc = gembux + valgem;
+			GamePacket pp = packetEnd(appendInt(appendString(createPacket(), "OnSetBux"), gemcalc));
+			ENetPacket* packetpp = enet_packet_create(pp.data,
+				pp.len,
+				ENET_PACKET_FLAG_RELIABLE);
+
+			enet_peer_send(peer, 0, packetpp);
+			delete pp.data;
+		}
 					world->items[x + (y*world->width)].foreground = 0;
 				}
 				else {
